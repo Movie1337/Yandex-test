@@ -4,15 +4,50 @@ const checkoutBtn = document.getElementById("checkout");
 let cartItems = 0;
 const maxItemsInRow = 3;
 const overlapPercentage = 50;
+
 items.forEach((item) => {
   item.addEventListener("dragstart", dragStart);
+  item.addEventListener("touchstart", touchStart);
 });
 
 cart.addEventListener("dragover", dragOver);
 cart.addEventListener("drop", dropItem);
+cart.addEventListener("touchmove", touchMove);
+cart.addEventListener("touchend", touchEnd);
 
 function dragStart(event) {
   event.dataTransfer.setData("item-id", event.target.id);
+}
+
+function touchStart(event) {
+  const itemId = event.currentTarget.id;
+  const originalItem = document.getElementById(itemId);
+  originalItem.style.visibility = "hidden";
+
+  const touch = event.touches[0];
+  const newItem = document.createElement("img");
+  newItem.src = originalItem.src;
+  newItem.classList.add("item-in-cart");
+  cart.appendChild(newItem);
+  newItem.style.position = "absolute";
+  newItem.style.left = `${touch.clientX}px`;
+  newItem.style.top = `${touch.clientY}px`;
+
+  // Перемещение при касании
+  newItem.addEventListener("touchmove", (e) => {
+    const touchMove = e.touches[0];
+    newItem.style.left = `${touchMove.clientX}px`;
+    newItem.style.top = `${touchMove.clientY}px`;
+  });
+
+  newItem.addEventListener("touchend", () => {
+    positionItemInCart(newItem);
+    cartItems++;
+
+    if (cartItems >= 3) {
+      checkoutBtn.style.display = "block";
+    }
+  });
 }
 
 function dragOver(event) {
