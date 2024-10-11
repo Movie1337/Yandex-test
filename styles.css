@@ -50,6 +50,11 @@ body {
   width: max-content;
   height: max-content;
   cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.item:hover {
+  transform: scale(1.1);
 }
 
 .cart {
@@ -72,6 +77,15 @@ body {
   width: max-content;
   height: max-content;
   transition: all 0.3s ease;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .checkout-btn {
@@ -87,14 +101,31 @@ body {
   font-size: 14px;
   color: black;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 0 0 0 rgba(252, 224, 0, 0.7);
+  }
+  70% {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 0 15px 10px rgba(252, 224, 0, 0);
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 0 0 0 rgba(252, 224, 0, 0);
+  }
 }
 
 .checkout-btn:hover {
   background-color: #ffaa00;
+  transform: translateX(-50%) scale(1.05);
 }
 
 @media (min-width: 768px) and (max-height: 1024px) {
